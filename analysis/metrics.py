@@ -6,16 +6,23 @@ PACKET_SIZE_THRESHOLD = 4000
 def compute_metrics(df: pd.DataFrame) -> dict:
     metrics = {}
 
-    metrics["total_events"] = len(df)
-    metrics["avg_response_time_ms"] = df["response_time_ms"].mean()
-    metrics["max_response_time_ms"] = df["response_time_ms"].max()
+    metrics["total_events"] = int(len(df))
+    metrics["avg_response_time_ms"] = float(df["response_time_ms"].mean())
+    metrics["max_response_time_ms"] = int(df["response_time_ms"].max())
 
-    metrics["high_latency_events"] = df[df["response_time_ms"] > LATENCY_THRESHOLD_MS].shape[0]
-    metrics["large_packet_events"] = df[df["packet_size"] > PACKET_SIZE_THRESHOLD].shape[0]
+    metrics["high_latency_events"] = int(
+        df[df["response_time_ms"] > LATENCY_THRESHOLD_MS].shape[0]
+    )
+    metrics["large_packet_events"] = int(
+        df[df["packet_size"] > PACKET_SIZE_THRESHOLD].shape[0]
+    )
 
-    metrics["failure_events"] = df[df["status"] == "FAIL"].shape[0]
+    metrics["failure_events"] = int(
+        df[df["status"] == "FAIL"].shape[0]
+    )
 
     return metrics
+
 
 
 def detect_anomalies(df: pd.DataFrame) -> pd.DataFrame:
