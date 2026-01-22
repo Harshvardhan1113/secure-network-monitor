@@ -2,57 +2,56 @@ import csv
 import random
 from datetime import datetime, timedelta
 
-OUTPUT_FILE = "sample_logs.csv"
-NUM_RECORDS = 5000   # change to 10000 later if needed
+OUTPUT_FILE = "secure_comm_logs.csv"
+NUM_RECORDS = 8000
 
-PROTOCOLS = ["HTTP", "HTTPS"]
-STATUSES = ["OK", "DELAY", "FAIL"]
+CHANNELS = ["SATCOM", "RF", "FIBER"]
+STATUSES = ["SUCCESS", "DELAY", "FAIL"]
 
-def random_ip():
-    return f"192.168.1.{random.randint(1, 254)}"
+def random_node():
+    return f"NODE-{random.randint(1000, 9999)}"
 
-start_time = datetime(2025, 1, 1, 10, 0, 0)
+start_time = datetime(2025, 1, 1, 0, 0, 0)
+current_time = start_time
 
 with open(OUTPUT_FILE, "w", newline="") as f:
     writer = csv.writer(f)
     writer.writerow([
         "timestamp",
-        "source_ip",
-        "destination_ip",
-        "protocol",
-        "packet_size",
-        "response_time_ms",
+        "source_node",
+        "destination_node",
+        "channel_type",
+        "latency_ms",
+        "message_size",
         "status"
     ])
 
-    current_time = start_time
-
     for _ in range(NUM_RECORDS):
-        current_time += timedelta(seconds=random.randint(1, 3))
+        current_time += timedelta(seconds=random.randint(1, 4))
 
-        # Normal traffic
-        packet_size = random.randint(100, 1500)
-        response_time = random.randint(50, 300)
-        status = "OK"
+        latency = random.randint(40, 250)
+        size = random.randint(200, 1500)
+        status = "SUCCESS"
 
-        # Introduce anomalies
-        if random.random() < 0.1:  # 10% delayed
-            response_time = random.randint(800, 1500)
+        # Simulated network stress
+        if random.random() < 0.12:
+            latency = random.randint(800, 1600)
             status = "DELAY"
 
-        if random.random() < 0.05:  # 5% failures
-            packet_size = random.randint(4000, 8000)
-            response_time = random.randint(1500, 3000)
+        # Simulated failure / hostile conditions
+        if random.random() < 0.05:
+            latency = random.randint(1800, 3200)
+            size = random.randint(3000, 7000)
             status = "FAIL"
 
         writer.writerow([
             current_time.strftime("%Y-%m-%d %H:%M:%S"),
-            random_ip(),
-            random.choice(["8.8.8.8", "8.8.4.4", "1.1.1.1"]),
-            random.choice(PROTOCOLS),
-            packet_size,
-            response_time,
+            random_node(),
+            random_node(),
+            random.choice(CHANNELS),
+            latency,
+            size,
             status
         ])
 
-print(f"Generated {NUM_RECORDS} log records in {OUTPUT_FILE}")
+print(f"Generated {NUM_RECORDS} secure communication logs.")
