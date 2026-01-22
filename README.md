@@ -9,8 +9,8 @@ A backend-first monitoring platform that analyzes protocol-level traffic and log
 - Analysis & Anomaly Detection
 - Secure Storage (Encryption + Integrity)
 - REST API Backend
-- Web Dashboard (Phase 4)
-- Android App (Phase 5)
+- Web Dashboard (ongoing)
+- Android App (ongoing)
 
 ## Tech Stack
 - Python, Flask
@@ -19,5 +19,3 @@ A backend-first monitoring platform that analyzes protocol-level traffic and log
 - PostgreSQL
 - HTML/CSS, Chart.js
 
-## Project Status
-Phase 0 – Repository and architecture setup.
